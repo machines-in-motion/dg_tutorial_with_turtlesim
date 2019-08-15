@@ -763,6 +763,25 @@ rosservice call /turtle1/set_target_position "position:
   z: 0.0" 
 ```
 
+### Visualizing the graph
+
+In the python terminal:
+
+```python
+from dynamic_graph import writeGraph
+writeGraph('/tmp/my_graph.dot')
+```
+
+You can open this file using 'xdot', or you may convert it to pdf:
+
+```
+dot -Tpdf /tmp/my_graph.dot > /tmp/my_graph.pdf
+```
+
+For the graph used below:
+
+![tutorial_graph](https://github.com/machines-in-motion/dg_tutorial_with_turtlesim/raw/master/images/dynamic_graph.png)
+
 ### Composing the graph in a script file
 
 You can also run a file by running:
@@ -772,7 +791,6 @@ rosrun dynamic_graph_manager run_command <path to the python file>
 ```
 
 For example, the python script corresponding to the control graph above is in dg_turtlesim/python/follow_target_graph.py
-
 
 ## Debug using GDB
 
