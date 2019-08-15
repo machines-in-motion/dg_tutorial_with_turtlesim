@@ -40,11 +40,11 @@ namespace dg_turtlesim {
       // signal for computation. This will be always NULL for input signals.
       
       robot_absolute_positionSIN(NULL,
-      				 name+"::input(vector2d)::position of robot [x,y] in absolute frame::robot_absolute_position"),
+      				 "TurtleSimTransform("+name+")::input(vector2d)::robot_absolute_position"),
       robot_orientationSIN(NULL,
-      			   "TurtlesimTransform("+name+")::input(double)::orientation of the robot::robot_orientation"),
+      			   "TurtlesimTransform("+name+")::input(double)::robot_orientation"),
       absolute_positionSIN(NULL,
-      		   name+"::input(vector2d)::position [x,y] in absolute frame::absolute_position"),
+			   "TurtlesimTransform("+name+")::input(vector2d)::absolute_position"),
 
       // we define here the output signal of the entity. 
 
@@ -52,7 +52,7 @@ namespace dg_turtlesim {
       // this output signal.
       
       relative_positionSOUT(robot_absolute_positionSIN << robot_orientationSIN << absolute_positionSIN,
-			    name+"::output(vector2d)::position in the relative frame of the turtle::relative_position")
+			    "TurtlesimTransform("+name+")::output(vector2d)::relative_position")
 
       
   {

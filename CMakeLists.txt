@@ -97,8 +97,7 @@ target_compile_definitions(dg_turtlesim_run PUBLIC
 # Entity compilation
 add_library( dg_turtlesim_entities SHARED
   src/turtlesim_control_entity.cpp
-  src/turtlesim_transform_entity.cpp
-  src/dg_basic_entity.cpp )
+  src/turtlesim_transform_entity.cpp)
 target_link_libraries(dg_turtlesim_entities dg_turtlesim)
 
 # Export entities as dg plugins, including python wrapper

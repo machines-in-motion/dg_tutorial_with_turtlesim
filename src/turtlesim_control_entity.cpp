@@ -28,13 +28,13 @@ namespace dg_turtlesim {
 
     : dynamicgraph::Entity(inName),
       
-      errorSIN(NULL,"input(vector nd)::position error::error"),
+      errorSIN(NULL,"TurtlesimControl("+inName+")::input(vector)::error"),
       
       velocitySOUT(boost::bind(&TurtlesimControl::control,
 			       this,
 			       _1,_2),
 		   errorSIN,
-		   "output(vector nd)::Desired linear velocity::desired_velocity")
+		   "TurtlesimControl("+inName+")::output(vector)::desired_velocity")
   {
 
     signalRegistration(errorSIN);
