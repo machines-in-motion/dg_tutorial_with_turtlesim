@@ -326,6 +326,8 @@ In this tutorial, our target will be to have the turtlesim swimming toward a (mo
 
 To achieve our turtlesim to chase this virtual point, we will create a graph of three entities:
 
+![graph](https://raw.githubusercontent.com/machines-in-motion/dg_tutorial_with_turtlesim/master/images/tutorial_graph.png)
+
 - a rosSubscribe entity, which will subscribe to /turtle1/target. This entity has no *graph* input (in the sense that it does not have a graph edge input connecting to the device or another entity). But via its ROS subscriber, the entity has an input from ROS, not managed by dynamic graph. The output signal of the entity will be the absolute position of the target point the robot should swim toward.
 
 - a TurtlesimTransform entity, which will transform the position of the target from the absolute coordinate frame of the simulated world to the frame relative to the turtlesim. This entity has 3 input signals 1) the [x,y] absolute position of the target, 2) the orientation of the turtlesim and 3) the [x,y] absolute position of the turtlesim. The output signal of this entity will be the position of the target relative to the robot.
