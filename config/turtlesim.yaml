@@ -1,0 +1,17 @@
+is_real_robot: true
+device:
+  name: "turtlesim"
+  sensors:
+    position:
+      size: 2
+    orientation:
+      size: 1
+    current_velocity:
+      size: 2
+  controls:
+    desired_velocity:
+      size: 2
+hardware_communication:
+  maximum_time_for_user_cmd: 100000
+  max_missed_control: 10
+  control_period: 1000000

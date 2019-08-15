@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <name>dg_turtlesim</name>
+  <version>1.0.0</version>
+  <description>Dynamic Graph Manager for turtlesim, for tutorial purposes</description>
+  <maintainer email="vberenz@tuebingen.mpg.de">Vincent Berenz</maintainer>
+  <license>BSD-3-Clause</license>
+  <author email="vberenz@tuebingen.mpg.de">Vincent Berenz</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>real_time_tools</build_depend>
+  <build_depend>mpi_cmake_modules</build_depend>
+  <build_depend>dynamic_graph_manager</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  
+  <run_depend>real_time_tools</run_depend>
+  <run_depend>dynamic_graph_manager</run_depend>
+  <run_depend>mpi_cmake_modules</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>message_generation</run_depend>
+  
+  <export>
+  </export>
+</package>
+
