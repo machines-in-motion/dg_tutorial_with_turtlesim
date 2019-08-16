@@ -4,15 +4,15 @@
 
 Dynamic Graph Manager is a software for composing realtime control graph for robotics.
 
-This tutorial is a way to get a rapid grasp of what dynamic graph is and how it works. It also presents a concrete exemple of its usage. In this tutorial, we will show how to control a [turtlesim](http://wiki.ros.org/turtlesim) via dynamic graph.
+This tutorial is a rapid way to grasp of what dynamic graph is and how it works. It also presents a concrete exemple of its usage. In this tutorial, we will show how to control a [turtlesim](http://wiki.ros.org/turtlesim) via dynamic graph.
 
 ## Intuition 
 
-Dynamic graph allows to compose control graphs for your favorite robot. To get your robot to work with Dynamic Graph, you need to wrap your robot code into a "device". A device has ouputs (robot sensors) and inputs (control commands). You can compose control graphs that connect the device ouputs to the device inputs. Composing a graph is done by associating entities one to another. An entity is a node of the graph, and it also has input and outputs. Association of entities is made by "plugging" inputs to outputs (i.e creating graph edges). 
+Dynamic graph allows to compose control graphs for your favorite robot. To get your robot to work with Dynamic Graph, you need to wrap your robot code into a **device**. A device has ouputs (robot sensors) and inputs (control commands). You can compose control graphs that connect the device ouputs to the device inputs. Composing a graph is done by associating entities one to another by plugging outputs to inputs. 
 
 In Dynamic graph, a device/entity output/input is called a **signal**. An entity has input signals and output signals. 
 
-If you are familiar with ROS, you may find the concept similar. In ROS, you compose graphs by associating nodes together, association of nodes being done via services / subscriptions / publications. Here the fundamental difference:
+You may find the concept similar to ROS. In ROS, you compose graphs by associating nodes together, association of nodes being done via services / subscriptions / publications. Here the fundamental difference:
 
 - In ROS, nodes runs asynchronuously (i.e. each node may run its own process). 
 - In Dynamic Graph, the graph is fully walked once per iteration. All entities are hosted by the same process and run synchronuously. If running on a realtime OS (rt-preempt patch is supported), the execution of the graph will be realtime safe.
@@ -135,7 +135,7 @@ cd ~/Workspace/workspace
 source ./devel/setup.bash
 ```
 
-To avoid having to type this in each new terminal you open, add these lines in ~/.bahsrc :
+To avoid having to type this in each new terminal you open, add these lines in ~/.bashrc :
 
 ```bash
 echo "Sourcing DG TUTORIAL"
