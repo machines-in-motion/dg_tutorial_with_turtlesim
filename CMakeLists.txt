@@ -65,11 +65,6 @@ add_required_dependency("dynamic-graph-python >= 3.0.0")
 #  ${${dgp_name}_LIBRARY_DIRS}
 #)
 
-# This macro sets the C++ preprocessor flags "XENOMAI", "RT_PREEMPT", or
-# "NON_REAL_TIME" according to the current operating system.
-define_os()
-
-
 include_directories(
     ${PROJECT_SOURCE_DIR}/include
     ${catkin_INCLUDE_DIRS}
