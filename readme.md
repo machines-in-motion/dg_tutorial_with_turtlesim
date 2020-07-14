@@ -98,7 +98,7 @@ But they will be unused in this tutorials. Only the binaries, that have been ins
 cd ~/Workspace/workspace
 source /opt/ros/kinetic/setup.bash # activating ROS and catkin
 source /opt/openrobots/setup.bash # activating dynamic graph
-catkin_make install
+catkin build
 ```
 
 ---
@@ -112,7 +112,7 @@ catkin_make install
 ```bash
 cd ~/Workspace/workspace
 source ./devel/setup.bash
-catkin_make run_tests
+catkin build --make-args run_tests
 ```
 
 ### Compiling and accessing the documentation (optional)
@@ -120,7 +120,7 @@ catkin_make run_tests
 ```bash
 cd ~/Workspace/workspace
 source ./devel/setup.bash
-catkin_make -DBUILD_DOCUMENTATION=ON
+catkin build -DGENERATE_DOCUMENTATION=ON
 ```
 
 You will find index.html in ~/Workspace/workspace/devel/share/dynamic_graph_manager/doc/html
