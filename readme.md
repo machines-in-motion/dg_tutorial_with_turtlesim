@@ -101,6 +101,18 @@ source /opt/openrobots/setup.bash # activating dynamic graph
 catkin build
 ```
 
+- troubleshooting with python2/3. If you feel like there is a python problem during the cmake you can fix the issue like this:
+	- for Python2.7
+	```
+	catkin config --cmake-args -DPYTHON_EXECTUABLE=`which python2` -DPYTHON_INCLUDE_DIR=/usr/include/python2.7
+	catkin build
+	```
+	- or for Python3.5
+	```
+	catkin config --cmake-args -DPYTHON_EXECTUABLE=`which python3` -DPYTHON_INCLUDE_DIR=/usr/include/python3.5
+	catkin build
+	```
+
 ---
 
 [catkin](http://wiki.ros.org/catkin/conceptual_overview) is a tool working on top of cmake. This is the compilation manager used by ROS. All the code used in this tutorial is organized in catkin packages you will find in the subfolders of ~/Workspace/workspace/src.
