@@ -1,4 +1,10 @@
-
+/**
+ * @file
+ * @license BSD 3-clause
+ * @copyright Copyright (c) 2020, New York University and Max Planck Gesellschaft
+ * 
+ * @brief 
+ */
 #include "dg_turtlesim/turtlesim_device.hpp"
 
 
@@ -11,7 +17,7 @@ namespace dg_turtlesim {
   // The device inherate from DynamicGraphManager
   
   DG_turtlesim_manager::DG_turtlesim_manager()
-    : dynamic_graph::DynamicGraphManager() {}
+    : dynamic_graph_manager::DynamicGraphManager() {}
 
   
   DG_turtlesim_manager::~DG_turtlesim_manager(){}
@@ -23,7 +29,7 @@ namespace dg_turtlesim {
     rt_printf("\nDG TURTLESIM: initializing hard communication ...");
 
     // dynamic graph manager will create nodes. ros_init gives access to them
-    ros::NodeHandle node = dynamic_graph::ros_init("dg_turtlesim");
+    ros::NodeHandle node = dynamic_graph_manager::ros_init("dg_turtlesim");
     
     // creating the instance of turtlesim (see turtlesim.hpp in same catkin package)
     turtlesim_.reset(new Turtlesim( node));
@@ -38,7 +44,7 @@ namespace dg_turtlesim {
   // are the exact same as the sensors provided in the configuration file /config/turtlesim.yaml.
   // The map will be the "output" of the device, i.e. what can be plugged to the input of entities in
   // control graphs
-  void DG_turtlesim_manager::get_sensors_to_map(dynamic_graph::VectorDGMap& map) {
+  void DG_turtlesim_manager::get_sensors_to_map(dynamic_graph_manager::VectorDGMap& map) {
 
     double x,y,theta,linear_velocity,angular_velocity;
 
@@ -65,7 +71,7 @@ namespace dg_turtlesim {
   // Note that the keys of the map (linear_velocity, angular_velocity) corresponds to controls
   // defined in /config/turtlesim.yaml.
   // Incoming commands are fed into turtlesim, having the robot moving.
-  void DG_turtlesim_manager::set_motor_controls_from_map(const dynamic_graph::VectorDGMap& map) {
+  void DG_turtlesim_manager::set_motor_controls_from_map(const dynamic_graph_manager::VectorDGMap& map) {
 
     dynamicgraph::Vector desired_velocity = map.at("desired_velocity");
 

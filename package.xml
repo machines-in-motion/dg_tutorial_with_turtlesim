@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>dg_turtlesim</name>
+  <name>dg_tutorial_with_turtlesim</name>
   <version>1.0.0</version>
   <description>Dynamic Graph Manager for turtlesim, for tutorial purposes</description>
   <maintainer email="vberenz@tuebingen.mpg.de">Vincent Berenz</maintainer>

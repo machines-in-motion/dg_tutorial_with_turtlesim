@@ -621,7 +621,7 @@ The c++ code is in dg_turtlesim/src/turtlesim_dg_main.cpp :
 
 int main(int argc, char*argv[]) {
 
-  std::string yaml_params_file = std::string(DG_TURTLESIM_CONFIG_PATH);
+  std::string yaml_params_file = std::string(CONFIG_PATH);
 
   std::cout << "Loading parameters from "
             << yaml_params_file
@@ -638,7 +638,7 @@ int main(int argc, char*argv[]) {
 
 ```
 
-DG_TURTLESIM_CONFIG_PATH is resolved during compilation to the file dg_turtlesim/config/turtlesim.yaml (see CMakeLists.txt).
+CONFIG_PATH is resolved during compilation to the file dg_turtlesim/config/turtlesim.yaml (see CMakeLists.txt).
 This file has already be mentionned when we described the code of the turtlesim device : there had to be a match between content in the source code of the device, and the signals declared by the device.
 
 The source code turtlesim_dg_main.cpp is used to generate the dg_turtlesim_run, which allows us to start dynamic graph.
@@ -808,7 +808,7 @@ For example, the python script corresponding to the control graph above is in dg
 
 If dynamic graph crashes when running the graph, it may be that there is some error in the code of the device or of an entity. [GDB](https://www.gnu.org/software/gdb/) can help tracking down the error.
 
-When starting the manager ("rosrun dg_turtlesim dg_turtlesim_run"), two processes ids are displayed in the terminal, e.g.
+When starting the manager (`rosrun dg_turtlesim dg_turtlesim_run`), two processes ids are displayed in the terminal, e.g.
 
 ```bash
 pid of dynamic graph process: 749

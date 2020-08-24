@@ -4,7 +4,7 @@
 
 int main(int argc, char*argv[]) {
   
-  std::string yaml_params_file = std::string(DG_TURTLESIM_CONFIG_PATH);
+  std::string yaml_params_file = std::string(CONFIG_PATH);
 
   std::cout << "Loading parameters from "
             << yaml_params_file

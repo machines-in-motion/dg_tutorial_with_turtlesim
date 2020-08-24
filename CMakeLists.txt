@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(dg_turtlesim)
+project(dg_tutorial_with_turtlesim)
 
 #set(ROBOT iiwa)
 
@@ -45,8 +45,8 @@ generate_messages(
 # Catkin export
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES dg_turtlesim
-  EXECUTABLES dg_turtlesim_run
+  LIBRARIES ${PROJECT_NAME}
+  EXECUTABLES ${PROJECT_NAME}_run
   CATKIN_DEPENDS ${CATKIN_PKGS}
 )
 
@@ -74,32 +74,32 @@ include_directories(
 )
 
 # Library compilation
-add_library( dg_turtlesim
+add_library( ${PROJECT_NAME}
   src/turtlesim.cpp
   src/turtlesim_device.cpp )
-target_link_libraries( dg_turtlesim ${catkin_LIBRARIES})
-pkg_config_use_dependency(dg_turtlesim dynamic-graph)
-pkg_config_use_dependency(dg_turtlesim dynamic-graph-python)
+target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES})
+pkg_config_use_dependency(${PROJECT_NAME} dynamic-graph)
+pkg_config_use_dependency(${PROJECT_NAME} dynamic-graph-python)
 
 # Executable compilation
-add_executable ( dg_turtlesim_run
+add_executable ( ${PROJECT_NAME}_run
   src/turtlesim_dg_main.cpp )
-target_link_libraries( dg_turtlesim_run dg_turtlesim)
-target_compile_definitions(dg_turtlesim_run PUBLIC
-  DG_TURTLESIM_CONFIG_PATH="${PROJECT_SOURCE_DIR}/config/turtlesim.yaml"
+target_link_libraries( ${PROJECT_NAME}_run ${PROJECT_NAME})
+target_compile_definitions(${PROJECT_NAME}_run PUBLIC
+    CONFIG_PATH="${PROJECT_SOURCE_DIR}/config/turtlesim.yaml"
   )
 
 # Entity compilation
-add_library( dg_turtlesim_entities SHARED
+add_library( ${PROJECT_NAME}_entities SHARED
   src/turtlesim_control_entity.cpp
   src/turtlesim_transform_entity.cpp)
-target_link_libraries(dg_turtlesim_entities dg_turtlesim)
+target_link_libraries(${PROJECT_NAME}_entities ${PROJECT_NAME})
 
 # Export entities as dg plugins, including python wrapper
-dynamic_graph_python_module("dg_turtlesim_entities"
-  dg_turtlesim_entities
-  dg_turtlesim_entities_wrap )
-set_target_properties(dg_turtlesim_entities PROPERTIES
+dynamic_graph_python_module("${PROJECT_NAME}_entities"
+  ${PROJECT_NAME}_entities
+  ${PROJECT_NAME}_entities_wrap )
+set_target_properties(${PROJECT_NAME}_entities PROPERTIES
   PREFIX ""
   LIBRARY_OUTPUT_DIRECTORY ${DYNAMIC_GRAPH_PLUGIN_DIR} )
 
