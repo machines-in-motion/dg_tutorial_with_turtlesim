@@ -1,29 +1,39 @@
 <?xml version="1.0"?>
-<package>
-  <name>dg_tutorial_with_turtlesim</name>
-  <version>1.0.0</version>
-  <description>Dynamic Graph Manager for turtlesim, for tutorial purposes</description>
-  <maintainer email="vberenz@tuebingen.mpg.de">Vincent Berenz</maintainer>
-  <license>BSD-3-Clause</license>
-  <author email="vberenz@tuebingen.mpg.de">Vincent Berenz</author>
+<?xml-model
+   href="http://download.ros.org/schema/package_format3.xsd"
+   schematypens="http://www.w3.org/2001/XMLSchema"?>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  
-  <build_depend>real_time_tools</build_depend>
-  <build_depend>mpi_cmake_modules</build_depend>
-  <build_depend>dynamic_graph_manager</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>geometry_msgs</build_depend>
-  <build_depend>message_generation</build_depend>
-  
-  <run_depend>real_time_tools</run_depend>
-  <run_depend>dynamic_graph_manager</run_depend>
-  <run_depend>mpi_cmake_modules</run_depend>
-  <run_depend>std_msgs</run_depend>
-  <run_depend>geometry_msgs</run_depend>
-  <run_depend>message_generation</run_depend>
-  
-  <export>
-  </export>
+<package format="3">
+
+    <name>dg_tutorial_with_turtlesim</name>
+    <version>1.0.0</version>
+    
+    <description>
+        Dynamic Graph Manager for turtlesim, for tutorial purposes.
+    </description>
+
+    <maintainer email="mnaveau@tuebingen.mpg.de">Maximilien Naveau</maintainer>
+    <maintainer email="vberenz@tuebingen.mpg.de">Vincent Berenz</maintainer>
+
+    <license>BSD-3-clause</license>
+
+    <buildtool_depend>ament_cmake</buildtool_depend>
+    <buildtool_depend>ament_cmake_python</buildtool_depend>
+    <buildtool_depend>mpi_cmake_modules</buildtool_depend>
+
+    <!-- Run time dependencies. -->
+    <depend>real_time_tools</depend>
+    <depend>dynamic_graph_manager</depend>
+    <depend>rclcpp</depend>
+    <depend>turtlesim</depend>
+    <depend>std_msgs</depend>
+    <depend>geometry_msgs</depend>
+    <depend>mim_msgs</depend>
+    <depend>dynamic-graph</depend>
+    <depend>dynamic-graph-python</depend>
+    
+    <export>
+        <build_type>ament_cmake</build_type>
+    </export>
+
 </package>
-

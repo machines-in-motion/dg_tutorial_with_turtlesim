@@ -1,113 +1,174 @@
-cmake_minimum_required(VERSION 2.8)
+#
+# Copyright (c) 2019, New York University and Max Planck Gesellschaft.
+#
+# License BSD-3 clause
+#
+
+#
+# set up the project
+#
+cmake_minimum_required(VERSION 3.10.2)
+
 project(dg_tutorial_with_turtlesim)
 
-#set(ROBOT iiwa)
+# Using C++17
+if(NOT CMAKE_C_STANDARD)
+  set(CMAKE_C_STANDARD 99)
+endif()
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 17)
+endif()
 
-#INCLUDE(cmake/base.cmake)
+#
+# Dependencies
+#
+# depend on ament macros
+find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_python REQUIRED)
 
-#find_package(catkin REQUIRED)
-#find_package(Eigen3 REQUIRED)
+# ROS2 dependencies
+find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(mim_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(turtlesim REQUIRED)
+# MiM dependencies.
+find_package(mpi_cmake_modules REQUIRED)
+find_package(real_time_tools REQUIRED)
+find_package(dynamic_graph_manager REQUIRED)
+# Dynamic graph dependencies.
+find_package(dynamic-graph REQUIRED)
+find_package(dynamic-graph-python REQUIRED)
 
-# support for c++ 11
-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wl,--no-as-needed")
-
-# ensuring path to libraries are set during install
-set(CMAKE_SKIP_BUILD_RPATH  FALSE)
-set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-set(CMAKE_INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib)
-
-# Search for dependencies
-set(CATKIN_PKGS ${CATKIN_PKGS}
+# export de dependencies
+ament_export_dependencies(
+  ament_cmake
+  ament_cmake_python
+  std_msgs
+  geometry_msgs
+  mim_msgs
+  rclcpp
   mpi_cmake_modules
   real_time_tools
   dynamic_graph_manager
-  std_msgs
-  geometry_msgs
-  message_generation
+  dynamic-graph
+  dynamic-graph-python)
+
+#
+# prepare to export all needed targets
+#
+ament_export_interfaces(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
+
+#
+# manage python file install
+#
+ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR python/${PROJECT_NAME})
+
+# Install launch files.
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}/
 )
 
-find_package(catkin REQUIRED COMPONENTS ${CATKIN_PKGS})
-search_for_python()
-search_for_boost()
-search_for_eigen()
+#
+# Install the python ROS nodes
+#
+install(
+  FILES nodes/publish_target_position.py
+  RENAME publish_target_position
+  DESTINATION lib/${PROJECT_NAME}
+  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+install(
+    FILES nodes/sequencer.py
+    RENAME sequencer
+    DESTINATION lib/${PROJECT_NAME}
+    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
 
-add_service_files(
-  FILES
-  turtlesim_target.srv )
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-  geometry_msgs
-)
-
-# Catkin export
-catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}
-  EXECUTABLES ${PROJECT_NAME}_run
-  CATKIN_DEPENDS ${CATKIN_PKGS}
-)
-
-
-# Trigger dependency to dynamic-graph.
-add_required_dependency("dynamic-graph >= 3.0.0")
-add_required_dependency("dynamic-graph-python >= 3.0.0")
-
-#ADD_COMPILE_DEPENDENCY("pinocchio >= 1.3.0")
-
-#build_prefix_for_pkg("dynamic-graph" dg_name)
-#build_prefix_for_pkg("dynamic-graph-python" dgp_name)
-
-#link_directories(
-#  ${${dg_name}_LIBRARY_DIRS}
-#  ${${dgp_name}_LIBRARY_DIRS}
-#)
-
-include_directories(
-    ${PROJECT_SOURCE_DIR}/include
-    ${catkin_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_PATH}
-    ${Boost_INCLUDE_DIR}
-    ${Eigen_INCLUDE_DIRS}
-)
-
-# Library compilation
-add_library( ${PROJECT_NAME}
-  src/turtlesim.cpp
-  src/turtlesim_device.cpp )
-target_link_libraries( ${PROJECT_NAME} ${catkin_LIBRARIES})
-pkg_config_use_dependency(${PROJECT_NAME} dynamic-graph)
-pkg_config_use_dependency(${PROJECT_NAME} dynamic-graph-python)
+#
+# Library compilation.
+#
+add_library(${PROJECT_NAME} src/robot_drivers/turtlesim_drivers.cpp
+                            src/dynamic_graph_manager/dgm_turtlesim.cpp)
+target_include_directories(
+  ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                         $<INSTALL_INTERFACE:include>)
+include_directories(${turtlesim_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${turtlesim_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}
+                      dynamic_graph_manager::dynamic_graph_manager)
+target_link_libraries(${PROJECT_NAME} real_time_tools::real_time_tools)
+target_link_libraries(${PROJECT_NAME} dynamic-graph::dynamic-graph)
+target_link_libraries(${PROJECT_NAME}
+                      dynamic-graph-python::dynamic-graph-python)
 
 # Executable compilation
-add_executable ( ${PROJECT_NAME}_run
-  src/turtlesim_dg_main.cpp )
-target_link_libraries( ${PROJECT_NAME}_run ${PROJECT_NAME})
-target_compile_definitions(${PROJECT_NAME}_run PUBLIC
-    CONFIG_PATH="${PROJECT_SOURCE_DIR}/config/turtlesim.yaml"
-  )
+add_executable(dgm_main_turtlesim
+               src/dynamic_graph_manager/turtlesim_dg_main.cpp)
+target_include_directories(
+  dgm_main_turtlesim PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                            $<INSTALL_INTERFACE:include>)
+target_link_libraries(dgm_main_turtlesim ${PROJECT_NAME})
+set(config_destination "share/${PROJECT_NAME}/dynamic_graph_manager")
+target_compile_definitions(
+  dgm_main_turtlesim
+  PUBLIC
+    CONFIG_PATH="${CMAKE_INSTALL_PREFIX}/${config_destination}/turtlesim.yaml"
+)
+install(FILES ${PROJECT_SOURCE_DIR}/config/turtlesim.yaml
+        DESTINATION ${config_destination})
 
 # Entity compilation
-add_library( ${PROJECT_NAME}_entities SHARED
-  src/turtlesim_control_entity.cpp
-  src/turtlesim_transform_entity.cpp)
-target_link_libraries(${PROJECT_NAME}_entities ${PROJECT_NAME})
-
-# Export entities as dg plugins, including python wrapper
-dynamic_graph_python_module("${PROJECT_NAME}_entities"
+add_library(
+  ${PROJECT_NAME}_entities SHARED
+  src/dynamic_graph/turtlesim_control_entity.cpp
+  src/dynamic_graph/turtlesim_transform_entity.cpp)
+target_include_directories(
   ${PROJECT_NAME}_entities
-  ${PROJECT_NAME}_entities_wrap )
-set_target_properties(${PROJECT_NAME}_entities PROPERTIES
-  PREFIX ""
-  LIBRARY_OUTPUT_DIRECTORY ${DYNAMIC_GRAPH_PLUGIN_DIR} )
+  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include>)
+target_link_libraries(${PROJECT_NAME}_entities ${PROJECT_NAME})
+# Install the target and it's python bindings.
+install_dynamic_graph_plugin_python_bindings(${PROJECT_NAME}_entities)
+# Install the plugin.
+get_dynamic_graph_plugin_install_path(plugin_install_path)
+install(
+  TARGETS ${PROJECT_NAME}_entities
+  EXPORT export_${PROJECT_NAME}
+  LIBRARY DESTINATION ${plugin_install_path}
+  ARCHIVE DESTINATION ${plugin_install_path}
+  RUNTIME DESTINATION ${plugin_install_path}
+  INCLUDES
+  DESTINATION include)
 
-# Not dynamic graph related: an executable to test ros interface
-# to turtlesim
-add_executable(turtlesim_exe
-  src/turtlesim.cpp
-  src/turtlesim_exe.cpp)
-target_link_libraries(turtlesim_exe ${catkin_LIBRARIES})
+# Not dynamic graph related: an executable to test ros interface to turtlesim
+add_executable(turtlesim_exe src/robot_drivers/turtlesim_exe.cpp)
+target_include_directories(
+  turtlesim_exe PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+                       $<INSTALL_INTERFACE:include>)
+target_link_libraries(turtlesim_exe ${PROJECT_NAME})
 
+#
+# Install the package
+#
 
+# Install the include directory
+install(DIRECTORY include/ DESTINATION include)
+# Install the libraries
+install(
+  TARGETS ${PROJECT_NAME} dgm_main_turtlesim turtlesim_exe
+  EXPORT export_${PROJECT_NAME}
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+  INCLUDES
+  DESTINATION include)
+
+#
+# Building documentation.
+#
+add_documentation()
+
+#
+# Export as an ament_package
+#
+ament_package()

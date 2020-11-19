@@ -1,8 +1,8 @@
 
-#include "dg_turtlesim/turtlesim_device.hpp"
+#include "dg_tutorial_with_turtlesim/dynamic_graph_manager/dgm_turtlesim.hpp"
 
 
-int main(int argc, char*argv[]) {
+int main(int /*argc*/, char* /*argv*/[]) {
   
   std::string yaml_params_file = std::string(CONFIG_PATH);
 
@@ -11,10 +11,8 @@ int main(int argc, char*argv[]) {
             << std::endl;
   YAML::Node param = YAML::LoadFile(yaml_params_file);
 
-  dg_turtlesim::DG_turtlesim_manager dgm;
+  dg_tutorial_with_turtlesim::DgmTurtlesim dgm;
 
   dgm.initialize(param);
-  dgm.run();
-  ros::waitForShutdown();
-  
+  dgm.run_single_process(); 
 }

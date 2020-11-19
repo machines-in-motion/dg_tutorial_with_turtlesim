@@ -1,6 +1,0 @@
-<launch>
-
-<node pkg="turtlesim" type="turtlesim_node" name="turtlesim_node"/>
-<node pkg="dg_turtlesim" type="publish_target_position" name="turtlesim_target_position"/>
-
-</launch>

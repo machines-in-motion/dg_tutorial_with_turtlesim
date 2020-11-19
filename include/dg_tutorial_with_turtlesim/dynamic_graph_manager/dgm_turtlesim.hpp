@@ -1,18 +1,23 @@
+/**
+ * @file
+ * @license BSD 3-clause
+ * @copyright Copyright (c) 2020, New York University and Max Planck Gesellschaft
+ * 
+ * @brief 
+ */
 
+// real-time prints
 #include "real_time_tools/iostream.hpp"
-
-#include "ros/ros.h"
-#include "ros/master.h"
-#include "dynamic_graph_manager/ros_init.hpp"
+// dynamic graph manager
 #include "dynamic_graph_manager/dynamic_graph_manager.hpp"
+// robot drivers
+#include "dg_tutorial_with_turtlesim/robot_drivers/turtlesim_drivers.hpp"
 
-#include "dg_turtlesim/turtlesim.hpp"
 
-
-namespace dg_turtlesim {
+namespace dg_tutorial_with_turtlesim {
     
   
-class DG_turtlesim_manager : public dynamic_graph_manager::DynamicGraphManager {
+class DgmTurtlesim : public dynamic_graph_manager::DynamicGraphManager {
 
 public:
 
@@ -20,8 +25,8 @@ public:
   typedef std::shared_ptr<Turtlesim> Turtlesim_ptr;
 
   
-  DG_turtlesim_manager();
-  ~DG_turtlesim_manager();
+  DgmTurtlesim();
+  ~DgmTurtlesim();
   
   void initialize_hardware_communication_process();
   void get_sensors_to_map(dynamic_graph_manager::VectorDGMap& map);

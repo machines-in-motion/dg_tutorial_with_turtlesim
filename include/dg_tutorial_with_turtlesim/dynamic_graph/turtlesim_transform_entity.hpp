@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @license BSD 3-clause
+ * @copyright Copyright (c) 2020, New York University and Max Planck Gesellschaft
+ * 
+ * @brief 
+ */
+
 #pragma once
 
 #include <dynamic-graph/linear-algebra.h>
@@ -7,12 +15,11 @@
 #include <dynamic-graph/command-setter.h>
 #include <dynamic-graph/command-getter.h>
 #include <dynamic-graph/factory.h>
-#include <sot/core/debug.hh>
 #include <math.h>
 #include <string>
 
 
-namespace dg_turtlesim {
+namespace dg_tutorial_with_turtlesim {
 
   class TurtlesimTransform : public dynamicgraph::Entity {
 
