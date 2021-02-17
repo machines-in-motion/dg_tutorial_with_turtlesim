@@ -14,8 +14,7 @@ namespace dg_tutorial_with_turtlesim
 // This is the code of the Dynamic Graph Manager interfacing with turtlesim
 // The hardware part inherit from DynamicGraphManager
 
-DgmTurtlesim::DgmTurtlesim()
-    : dynamic_graph_manager::DynamicGraphManager()
+DgmTurtlesim::DgmTurtlesim() : dynamic_graph_manager::DynamicGraphManager()
 {
 }
 
@@ -33,7 +32,8 @@ void DgmTurtlesim::initialize_hardware_communication_process()
     // dynamic graph manager will create nodes. ros_init gives access to them
     dynamic_graph_manager::RosNodePtr node =
         dynamic_graph_manager::get_ros_node("dg_tutorial_with_turtlesim");
-    dynamic_graph_manager::ros_add_node_to_executor("dg_tutorial_with_turtlesim");
+    dynamic_graph_manager::ros_add_node_to_executor(
+        "dg_tutorial_with_turtlesim");
 
     // creating the instance of turtlesim (see turtlesim.hpp in same catkin
     // package)
@@ -50,14 +50,15 @@ void DgmTurtlesim::initialize_hardware_communication_process()
 // the sensors provided in the configuration file /config/turtlesim.yaml. The
 // map will be the "output" of the device, i.e. what can be plugged to the input
 // of entities in control graphs
-void DgmTurtlesim::get_sensors_to_map(
-    dynamic_graph_manager::VectorDGMap& map)
+void DgmTurtlesim::get_sensors_to_map(dynamic_graph_manager::VectorDGMap& map)
 {
     double x, y, theta, linear_velocity, angular_velocity;
 
     // reading sensory data from the robot
+    // rt_printf("DgmTurtlesim::get_sensors_to_map: Get turtlesim pose.\n");
     turtlesim_->get_pose(x, y, theta);
 
+    // rt_printf("DgmTurtlesim::get_sensors_to_map: Get turtlesim velocity.\n");
     turtlesim_->get_velocity(linear_velocity, angular_velocity);
 
     assert(x == x);
@@ -66,6 +67,8 @@ void DgmTurtlesim::get_sensors_to_map(
     assert(angular_velocity == angular_velocity);
 
     // filling the sensor maps
+    // rt_printf(
+    //     "DgmTurtlesim::get_sensors_to_map: Writting in the sensor map.\n");
     map["position"](0) = x;
     map["position"](1) = y;
     map["orientation"](0) = theta;

@@ -65,10 +65,7 @@ ament_export_interfaces(export_${PROJECT_NAME} HAS_LIBRARY_TARGET)
 ament_python_install_package(${PROJECT_NAME} PACKAGE_DIR python/${PROJECT_NAME})
 
 # Install launch files.
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}/
-)
+install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
 
 #
 # Install the python ROS nodes
@@ -79,10 +76,10 @@ install(
   DESTINATION lib/${PROJECT_NAME}
   PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
 install(
-    FILES nodes/sequencer.py
-    RENAME sequencer
-    DESTINATION lib/${PROJECT_NAME}
-    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
+  FILES nodes/sequencer.py
+  RENAME sequencer
+  DESTINATION lib/${PROJECT_NAME}
+  PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE)
 
 #
 # Library compilation.
@@ -101,23 +98,45 @@ target_link_libraries(${PROJECT_NAME} dynamic-graph::dynamic-graph)
 target_link_libraries(${PROJECT_NAME}
                       dynamic-graph-python::dynamic-graph-python)
 
-# Executable compilation
+#
+# Install config file
+#
+set(config_destination "share/${PROJECT_NAME}/dynamic_graph_manager")
+install(FILES ${PROJECT_SOURCE_DIR}/config/turtlesim.yaml
+        DESTINATION ${config_destination})
+
+#
+# Executables
+#
+
+# Executable single process
 add_executable(dgm_main_turtlesim
                src/dynamic_graph_manager/turtlesim_dg_main.cpp)
 target_include_directories(
   dgm_main_turtlesim PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
                             $<INSTALL_INTERFACE:include>)
 target_link_libraries(dgm_main_turtlesim ${PROJECT_NAME})
-set(config_destination "share/${PROJECT_NAME}/dynamic_graph_manager")
 target_compile_definitions(
   dgm_main_turtlesim
   PUBLIC
-    CONFIG_PATH="${CMAKE_INSTALL_PREFIX}/${config_destination}/turtlesim.yaml"
-)
-install(FILES ${PROJECT_SOURCE_DIR}/config/turtlesim.yaml
-        DESTINATION ${config_destination})
+    CONFIG_PATH="${CMAKE_INSTALL_PREFIX}/${config_destination}/turtlesim.yaml")
 
+# Executable multi-process
+add_executable(dgm_main_turtlesim_multiprocess
+               src/dynamic_graph_manager/turtlesim_dg_main_multiprocess.cpp)
+target_include_directories(
+  dgm_main_turtlesim_multiprocess
+  PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+         $<INSTALL_INTERFACE:include>)
+target_link_libraries(dgm_main_turtlesim_multiprocess ${PROJECT_NAME})
+target_compile_definitions(
+  dgm_main_turtlesim_multiprocess
+  PUBLIC
+    CONFIG_PATH="${CMAKE_INSTALL_PREFIX}/${config_destination}/turtlesim.yaml")
+
+#
 # Entity compilation
+#
 add_library(
   ${PROJECT_NAME}_entities SHARED
   src/dynamic_graph/turtlesim_control_entity.cpp
@@ -156,6 +175,7 @@ install(DIRECTORY include/ DESTINATION include)
 # Install the libraries
 install(
   TARGETS ${PROJECT_NAME} dgm_main_turtlesim turtlesim_exe
+          dgm_main_turtlesim_multiprocess
   EXPORT export_${PROJECT_NAME}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib

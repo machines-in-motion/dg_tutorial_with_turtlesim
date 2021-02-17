@@ -46,7 +46,6 @@ def main(args=None):
     rclpy.init(args=args)
     turtlesim_target_publisher = TurtlesimTargetPublisher()
     rclpy.spin(turtlesim_target_publisher)
-    rclpy.shutdown()
 
 
 if __name__ == "__main__":

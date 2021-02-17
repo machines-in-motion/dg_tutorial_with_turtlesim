@@ -15,10 +15,12 @@ def main(args=None):
 
     graph_script = os.path.abspath(follow_target_graph.__file__)
 
+    print("Load graph!")
     dgm_client.run_python_script(graph_script)
+    dgm_client.run_python_command("print('Graph loaded.')")
 
     time.sleep(2)
-    print("start dynamic graph!")
+    print("Start dynamic graph!")
     dgm_client.start_tracer()
     dgm_client.start_dynamic_graph()
 

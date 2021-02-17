@@ -10,15 +10,22 @@ def generate_launch_description():
         [
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
-                    [ThisLaunchFileDir(), "/start_turtlesim.launch.py"]
+                    [
+                        ThisLaunchFileDir(),
+                        "/start_turtlesim_dgm_multiprocess.launch.py",
+                    ]
+                )
+            ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    [ThisLaunchFileDir(), "/start_target_publisher.launch.py"]
                 )
             ),
             Node(
                 package="dg_tutorial_with_turtlesim",
-                node_executable="dgm_main_turtlesim",
+                node_executable="sequencer",
                 output="screen",
-                prefix=['xterm -hold -e'], 
-                # prefix=['xterm -e gdb -ex=r --args'],
+                prefix=["xterm -hold -e"],
             ),
         ]
     )

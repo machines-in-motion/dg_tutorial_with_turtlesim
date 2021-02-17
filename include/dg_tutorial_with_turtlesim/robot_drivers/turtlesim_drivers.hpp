@@ -26,6 +26,7 @@ namespace dg_tutorial_with_turtlesim
 class AsyncPose
 {
 public:
+    AsyncPose();
     void get_pose(double &x, double &y, double &theta);
     void get_velocity(double &linear, double &angular);
     void set_pose(double x, double y, double theta);

@@ -22,6 +22,7 @@ def generate_launch_description():
                 package="dg_tutorial_with_turtlesim",
                 node_executable="sequencer",
                 output="screen",
+                prefix=['xterm -hold -e'],
             ),
         ]
     )

@@ -11,7 +11,8 @@ def generate_launch_description():
                 package="turtlesim",
                 node_executable="turtlesim_node",
                 output="screen",
-                prefix=["xterm -e gdb -ex=r --args"],
+                # prefix=["xterm -e gdb -ex=r --args"],
+                prefix=['xterm -hold -e'],
             )
         ]
     )

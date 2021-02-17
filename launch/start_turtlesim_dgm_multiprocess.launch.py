@@ -15,10 +15,10 @@ def generate_launch_description():
             ),
             Node(
                 package="dg_tutorial_with_turtlesim",
-                node_executable="dgm_main_turtlesim",
+                node_executable="dgm_main_turtlesim_multiprocess",
                 output="screen",
-                prefix=['xterm -hold -e'], 
-                # prefix=['xterm -e gdb -ex=r --args'],
+                prefix=['xterm -e gdb -ex=r --args'],
+                # prefix=['xterm -hold -e'],
             ),
         ]
     )

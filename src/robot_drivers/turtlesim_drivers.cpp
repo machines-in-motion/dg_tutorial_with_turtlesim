@@ -7,6 +7,17 @@ namespace dg_tutorial_with_turtlesim
 /*
  * AsyncPose
  */
+
+AsyncPose::AsyncPose()
+{
+    mutex_.unlock();
+    x = 0.0;
+    y = 0.0;
+    theta = 0.0;
+    linear_velocity = 0.0;
+    angular_velocity = 0.0;
+}
+
 void AsyncPose::get_pose(double &x, double &y, double &theta)
 {
     this->mutex_.lock();
@@ -51,7 +62,7 @@ Turtlesim::Turtlesim(dynamic_graph_manager::RosNodePtr node)
     // Create the subscrition.
     subscription_ = node->create_subscription<turtlesim::msg::Pose>(
         TURTLESIM_POSE_TOPIC,
-        5,
+        100,
         std::bind(&Turtlesim::pose_callback, this, _1));
 
     publisher_ = node->create_publisher<geometry_msgs::msg::Twist>(
@@ -97,9 +108,9 @@ void Turtlesim::set_velocity(double linear, double angular)
 
 void Turtlesim::pose_callback(const turtlesim::msg::Pose::SharedPtr msg)
 {
-    called_once_ = true;
     pose_.set_pose(msg.get()->x, msg.get()->y, msg.get()->theta);
     pose_.set_velocity(msg.get()->linear_velocity, msg.get()->angular_velocity);
+    called_once_ = true;
 }
 
 }  // namespace dg_tutorial_with_turtlesim
